@@ -1,5 +1,5 @@
+import time
 from selenium import webdriver
-import selenium.common.exceptions
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,17 +20,22 @@ desired_caps = {
     'browserName': "firefox",
     'browserVersion': "81",
     'moz:firefoxOptions': {
-        'profile': "UEsDBBQACAAIAPZxT1EAAAAAAAAAABINAAAHACAAdXNlci5qc1VUDQAHAbyIX7K+iF+xvohfdXgLAAEE9QEAAAQUAAAAnVZNb9s4EL33Vyx86gJrImnaS3vKpimwQNAENYIeCYocSYwpkssPK/73OxSl2LFkKdlTInlIzbx5895ED45aB+XHVeFMi0/EsxK6/6WuSMNUyxwQ0KxQIFZ//VEy5eHPbx/i4aRgAWOscSEdqYGpUOdngkE7yRfOawitcVtSh2CJraWv9+v0s2XerxXoKtR48NOXL6+PDQk7YAL/CAjAA4gf0vlwjblwBXgsuHiarmmwrmfKa2caoJ47aQN1UdMgm3Tk6mL6Q4EVniAc+l7fKONhupohWphWK8MEfkuzKgFbm/Z3DXqDaCWkpo9bTMoGnz5GGyOYWsAedsEY5Qk4Zxw32ht1DPe4fC8rbTSi1kBTgNt0j/5MMuAa6b3EAMS3ZFEFUoHB4Mvpoj3k6GCQNA58RIBLrIhyx3w9D5iSekuMBU3hOYDTTKWuv5tqZer/r6inP9ZCIZzc4TPjHLDvUSNEHnlDObjgJyF7aan0VrE9iNvLi81PgxRLHPg8HYyvxL3+LTUSwV9eEIkfMo+/7vDEihUmhq+FYnq7GpMzF0SZUvTJIxgpT5l7NM7t2UqEG2NJW8sASvqAF/wbpTtHmcSXrQykH7uBnlhcIs0sAIphY3BS5jnpE8GjJTWOl8W7aQuKp1GLLrV0dVJy6rbOHIsWGwxEI7Tl/hFD3i040aaZu51ND3h0MuyRKQrwP+KDkzxQ42QlNbVGSb6fp6qGFueT9PXMdPNVovlmkl5uYtEP1kP38roj49sEdvKa2YpfprNvTGoKRp6RucMcYpltx9/xIJqyxDhYM2s9QfaZlhZ72mvEtO4MsHNve/5MZzvmwzzbhnvvbzYPR6EX06zHEUHlC25PstJ2sZ+WYmczGIC7fby7JleEHXo5RuGJ7Vh2nFmRPu3YMErzdBuMlDMUjB2sE2OYWr/JhMc1O3jqDHU2wTwJKbX564+aymIw37PYbDjyLOna5bLl3iMjF+8ulOHbTgPf1DEPzPG6p9mSnTckDwMRsbGz3cOheBN1XxHHoCk5KaYFeKRZp2J1Nc2ELO7rYVqRTiGe8fohmT72jBL1u9Py0tSAkIxUjV0PBpMRuZ3B7cicfbc6HMwZVS52djCLdqLWdOJHc2eym3b72D/6Jq9MZzfF3hZpJ4gCodcVTRazQKwa0JF5DXz7PWvi3/mX9zsmYULIlDFbMJvJBf7/Lu7KVFV62W+Us/ZyNH9dxTeoqyzIQqrEWC2rOqgFQx0BMEwDaXCX7Ni4Souqg5OiD+tP2muR3bh0Luw/h+FXpY82rw0vm8l/UEsHCAujrKTJAwAAEg0AAFBLAwQUAAgACAD2cU9RAAAAAAAAAADVAAAAEgAgAF9fTUFDT1NYLy5fdXNlci5qc1VUDQAHAbyIX7K+iF+Dv4hfdXgLAAEE9QEAAAQUAAAAY2AVY2dgYmDwTUxW8A9WiFCAApAYAycQGwHxYiAG8a8yEAUcQ0KCoEyQjhlAbIumhBEhLpqcn6uXWFCQk6pXWJpYlJhXkpmXylCob2BgYWhtmmZhkZSaZGDtllmUmpZfYe1q5mbk5GxsoOvsauGoa+JmbKprYW5kqets5GZoYenq5OToaMkAAFBLBwhRZYXpiAAAANUAAABQSwECFAMUAAgACAD2cU9RC6OspMkDAAASDQAABwAgAAAAAAAAAAAApIEAAAAAdXNlci5qc1VUDQAHAbyIX7K+iF+xvohfdXgLAAEE9QEAAAQUAAAAUEsBAhQDFAAIAAgA9nFPUVFlhemIAAAA1QAAABIAIAAAAAAAAAAAAKSBHgQAAF9fTUFDT1NYLy5fdXNlci5qc1VUDQAHAbyIX7K+iF+Dv4hfdXgLAAEE9QEAAAQUAAAAUEsFBgAAAAACAAIAtQAAAAYFAAAAAA==",
+        'profile': "UEsDBBQAAAAIAGNiU1FuBzPD5wMAAKwNAAAHABwAdXNlci5qc1VUCQADquaNX6vmjV91eAsAAQT1AQAABBQAAACdV01v4zYQvfdXFD61QE0km+6le0qzKVBg0SzWCPZIUORIYkyRLD+s+N93KEprx5Yppydb8gw58+bNm3H04Kh1UP+yqpzp8Yl4VsPwXeqGdEz1zAEBzSoFYvXbzzVTHn799FM8eAoW0MYaF5JLC0yFNj8TNNpJvuCvIfTGbUkbgiW2lb7dr9PPlnm/VqCb0KLjh48f37pNATtgAj8EBOABxF/S+XCPsXAF6BZcPA3XdJjXK+WtMx1Qz520gbqoaZBdcrm7mb8osMoThEM/6QdlPMxnM1kL02tlmMC7NGsSsK3pv7egN4hWQmre3WJQNvh0Ge2MYGoBe9gFY5Qn4Jxx3Ghv1DHcM+lPHjn/62wFVLFJSeTw1niRRrSl0Vf6OehMgHXpMi8bbXSyhK4Ctxke/QWUwHXSe7w/3VGzqAJpwKDx7Xw1PGTrYJDNDnzEyteYC+WO+bZcSSX1lhgLmsJrAKeZSnR8dw/UiZjfop6/rIdKOLnDZ8Y5ICGjRog8EppycMHPQvaDa9JbxfYgHm9vNv8Y5H4i5+/zxvhKPOnvUiND/e0NkXiRef72BT1WrDIx/FEpprer867JCVGmFH3xCEaKU+Yancf2aiXCjbakb2UAJX3AA/6N0l3icqLMVgYy6sHUN5hcIk0RAMWwMNjC5WbxqfOiJS3y3uLZtAfFkwZEl0q6Okk5VVtnjkWLBQaiEdp6/4wm71bCaJMYPBbDAx6dDHtkigL8RnxwkgdqnGykptYoyfdlqmroUTjImE+hmm8CzSeT9HITq7Gxvg4v7wcyXqf8s8cUM/7RnWNhUlHQ8oL+HvoQ0+wH/p43oqlrtIM1s9YTZJ/pabWno0bM684EO/d25M98tOd8KLNtOvfpYfP1yPRmnvXYIqh8we1HjR1sPyzZFiOYgHt8/nJP7gg71PIchRe2Y3kUFifCacWmVirTbZrwnKFg7GCdGMPU+qrt4DxnBy/DpC8GmDshhVY+/qioLAbzOYvNhiPPkq7dLu8CT8jIxbMrZfh20MCrKuaBOd6ONFvaMzqSm4GI2Nli9bAprqLuG+IYHEpOinkBPtOsU7G6m2dCFvf11K1IpxAvzPopmNH2ghKNS93yNteBkIw0nV1PAyYj8ljA7Wg4+2F1OAxnVLk4jIMi2ola84Ef9Z3J03RYFP/WD3mXu7jCjmORDoIoEHrd0DRiFojVAk5k3gLffs6a+Gf+5f0TkzAhZIqYLQyb2X8W//cfhTJNk16Oq25xvBz135DxA+oqC7KSKjFWy6YNamGgngEwdQPpcJcc2LhKi6qDk6QP60/aa5HduHQu7D+H5le1jzavDYfN5D9QSwECHgMUAAAACABjYlNRbgczw+cDAACsDQAABwAYAAAAAAABAAAApIEAAAAAdXNlci5qc1VUBQADquaNX3V4CwABBPUBAAAEFAAAAFBLBQYAAAAAAQABAE0AAAAoBAAAAAA=",
+        # 'args': [
+        #     "-start-debug-server",
+        #     "9222"
+        # ]
     },
     'sauce:options': {
-        'name': "Growing Build Duration Test",
+        'build':"sauce_debug10/19",
+        'name': "Slow Selenium CMDs",
         'parentTunnel': "huluadmin",
         'tunnelIdentifier': "ha-parent-robocop-saucelabs",
-        'build':"sauce_debug",
         'seleniumVersion': "3.141.59",
         'screenResolution': "2360x1770",
         'username': username,
         'accessKey': access_key,
+        'tags': ["custom_ff_profile"],
         # 'extendedDebugging': True,
     },
 }
@@ -43,7 +48,8 @@ def ready_state_check(driver):
 
 driver = webdriver.Remote(command_executor="https://ondemand.us-west-1.saucelabs.com/wd/hub", desired_capabilities=desired_caps)
 try:
-    wait = WebDriverWait(driver, 25)
+    wait = WebDriverWait(driver, 12)
+    find_by_css = lambda css_selector: wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
     driver.maximize_window()
     driver.get("https://develop.prod.hulu.com")
     # some cookie manipulation goes here, but doesn't look critical.
@@ -65,7 +71,8 @@ try:
     ready_state_check(driver)
 
     # trigger login modal and login
-    driver.find_element_by_css_selector(".navigation__action-button").click()
+    action_btn = find_by_css(".navigation__action-button")
+    action_btn.click()
     ready_state_check(driver)
     ready_state_check(driver)
     email_field = driver.find_element_by_css_selector("*[name='email']")
@@ -85,25 +92,31 @@ try:
         pass
     # wait.until(EC.presence_of_element_located((By.XPATH, '//span[contains(text(), "New_Profile")]'))).click()
 
-    home_thing = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".cu-hub-collections-home")))
+    find_by_css(".cu-hub-collections-home")
     # do something with js?
     # driver.execute_script(cmd 66. omitted god awful long uglified js)
     ready_state_check(driver)
 
-    LIVE_BTN_ID = "[data-automationid='globalnav-live']"
-    global_nav_live = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, LIVE_BTN_ID)))
+    global_nav_live = find_by_css("[data-automationid='globalnav-live']")
     # driver.execute_script(cmd 68. omitted god awful long uglified js)
-    global_nav_live = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, LIVE_BTN_ID)))
+    global_nav_live
     # driver.execute_script(cmd 69. omitted god awful long uglified js)
-    global_nav_live = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, LIVE_BTN_ID)))
+    global_nav_live
     # driver.execute_script(cmd 73. omitted god awful long uglified js)
     # GET some ELEMENT? Can't find element ID in selenium log...
     # Click aforementioned mystery element, looks like they're clickingthe LIVE button?
     global_nav_live.click()
 
+    global_home = find_by_css(".GlobalNavigation__logo")
+    global_home.click()
+    ready_state_check(driver)
+    ready_state_check(driver)
+
+    maximize_pip = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".MaximizeButton")))
+    maximize_pip.click()
 
     # OK finish test
-    print(">>>Job finished OK<<<")
+    print("Job finished OK")
     sauce_client.jobs.update_job(driver.session_id, passed=True)
     driver.quit()
 except Exception:
