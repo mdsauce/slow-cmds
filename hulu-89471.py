@@ -11,6 +11,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# building this test to mimic this one: https://app.saucelabs.com/tests/430b8dd272c14d5b85888d152cf238e6?auth=67726b6af21a8b008d4eef513de8ba4b#106
+
 username = os.getenv("SAUCE_USER") 
 access_key = os.getenv("SAUCE_KEY")
 sauce_client = SauceClient(username, access_key)
