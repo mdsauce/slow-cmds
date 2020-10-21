@@ -52,7 +52,7 @@ firefox_desired_caps = {
         # ]
     },
     'sauce:options': {
-        'build':"sauce_debug10/20",
+        'build':"sauce_debug10/21:navi",
         'name': "Slow Selenium CMDs",
         'parentTunnel': "huluadmin",
         'tunnelIdentifier': "ha-parent-robocop-saucelabs",
@@ -60,6 +60,10 @@ firefox_desired_caps = {
         'screenResolution': "2360x1770",
         'username': username,
         'accessKey': access_key,
+        'prerun': {
+            'executable': "https://thawing-ocean-41880.herokuapp.com/memory_script.py",
+            'background': True
+        },
         # 'extendedDebugging': True,
     },
 }
@@ -127,8 +131,6 @@ try:
     # driver.execute_script(cmd 69. omitted god awful long uglified js)
     global_nav_live
     # driver.execute_script(cmd 73. omitted god awful long uglified js)
-    # GET some ELEMENT? Can't find element ID in selenium log...
-    # Click aforementioned mystery element, looks like they're clickingthe LIVE button?
     global_nav_live.click()
 
     global_home = find_by_css(".GlobalNavigation__logo")
